@@ -78,6 +78,7 @@ describe('ValueGetter', () => {
         const value1 = result.value()
         const value2 = result.value()
 
+        expect(result).not.toBe(vg)
         expect(value1).toBe('value1')
         expect(value2).toBe('value1')
         expect(fn).toBeCalledTimes(1)
@@ -95,6 +96,7 @@ describe('ValueGetter', () => {
         const value1 = result.value()
         const value2 = result.value()
 
+        expect(result).not.toBe(vg)
         expect(value1).toBe('value1')
         expect(value2).toBe('value1')
         expect(fn).toBeCalledTimes(1)
@@ -112,6 +114,7 @@ describe('ValueGetter', () => {
           cache = new WeakMap()
           const value2 = result.value()
 
+          expect(result).not.toBe(vg)
           expect(value1).toBe('value1')
           expect(value2).toBe('value2')
           expect(fn).toBeCalledTimes(2)
@@ -128,8 +131,25 @@ describe('ValueGetter', () => {
       const result = vg.convert(Number)
       const value = result.value()
 
+      expect(result).not.toBe(vg)
       expect(result).toBeInstanceOf(ValueGetter)
       expect(value).toBe(64)
+    })
+  })
+
+  describe('tap(sideEffect: (val: T) => U)', () => {
+    it('return ValueGetter<T>', () => {
+      const fn = jest.fn()
+      const getter: Getter<string> = () => 'value'
+      const vg = new ValueGetter(getter)
+
+      const result = vg.tap(fn)
+      const value = result.value()
+
+      expect(result).not.toBe(vg)
+      expect(value).toBe('value')
+      expect(fn).toBeCalledWith(value)
+      expect(fn).toBeCalledTimes(1)
     })
   })
 

@@ -44,6 +44,14 @@ export class ValueGetter<T> {
     return new ValueGetter(() => convert(this.#get()))
   }
 
+  tap(sideEffect: (val: T) => void): ValueGetter<T> {
+    return new ValueGetter(() => {
+      const val = this.value()
+      sideEffect(val)
+      return val
+    })
+  }
+
   get(): Getter<T> {
     return this.#get
   }
