@@ -3,18 +3,35 @@ import { Getter } from '@blackglory/types'
 import { getError } from 'return-style'
 
 describe('ValueGetter', () => {
-  describe('default(val: NonNullable<T>)', () => {
-    it('return ValueGetter<NonNullable<T>)', () => {
-      const defaultValue = 'value'
-      const getter: Getter<string | undefined> = () => undefined
-      const vg = new ValueGetter(getter)
+  describe('default<U>(val: U))', () => {
+    describe('T includes Nullable', () => {
+      it('return ValueGetter<NonNullable<T> | U>', () => {
+        const defaultValue = 64
+        const getter: Getter<string | undefined> = () => undefined
+        const vg = new ValueGetter(getter)
 
-      const result = vg.default(defaultValue)
-      const value = result.value()
+        const result = vg.default(defaultValue)
+        const value = result.value()
 
-      expect(result).not.toBe(vg)
-      expect(result).toBeInstanceOf(ValueGetter)
-      expect(value).toBe(defaultValue)
+        expect(result).not.toBe(vg)
+        expect(result).toBeInstanceOf(ValueGetter)
+        expect(value).toBe(defaultValue)
+      })
+    })
+
+    describe('T does not include Nullable', () => {
+      it('return ValueGetter<T>', () => {
+        const defaultValue = 64
+        const getter: Getter<string> = () => '64'
+        const vg = new ValueGetter(getter)
+
+        const result = vg.default(defaultValue)
+        const value = result.value()
+
+        expect(result).not.toBe(vg)
+        expect(result).toBeInstanceOf(ValueGetter)
+        expect(value).toBe('64')
+      })
     })
   })
 
