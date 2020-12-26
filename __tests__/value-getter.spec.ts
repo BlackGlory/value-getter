@@ -67,6 +67,34 @@ describe('ValueGetter', () => {
     })
   })
 
+  describe('required()', () => {
+    describe('pass', () => {
+      it('return ValueGetter<NonNullable<T>>', () => {
+        const getter: Getter<string | undefined> = () => 'value'
+        const vg = new ValueGetter(getter)
+
+        const result = vg.required()
+        const value = result.value()
+
+        expect(result).not.toBe(vg)
+        expect(value).toBe('value')
+      })
+    })
+
+    describe('not pass', () => {
+      it('throws', () => {
+        const getter: Getter<string | undefined> = () => undefined
+        const vg = new ValueGetter(getter)
+
+        const result = vg.required()
+        const err = getError(() => result.value())
+
+        expect(result).not.toBe(vg)
+        expect(err).toBeInstanceOf(Error)
+      })
+    })
+  })
+
   describe('memoize', () => {
     describe('memoize(cache: WeakMap<Getter<T>, T>)', () => {
       it('return ValueGetter<T>', () => {

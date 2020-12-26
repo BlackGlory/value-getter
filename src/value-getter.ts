@@ -16,11 +16,17 @@ export class ValueGetter<T> {
     return new ValueGetter(() => this.value() ?? val) as ValueGetter<AddDefault<T, U>>
   }
 
-  assert(assert: (val: T) => unknown): ValueGetter<T> {
+  assert<U extends T = T>(assert: (val: T) => unknown): ValueGetter<U> {
     return new ValueGetter(() => {
       const val = this.value()
       assert(val)
       return val
+    }) as ValueGetter<U>
+  }
+
+  required(): ValueGetter<NonNullable<T>> {
+    return this.assert(val => {
+      if (val === undefined || val === null) throw new Error(`${val} should not be null or undefined`)
     })
   }
 
