@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "target": "ES2019"
+  , "module": "CommonJS"
+  , "strict": true
+  , "noUnusedLocals": true
+  , "noUnusedParameters": true
+  , "experimentalDecorators": true
+  , "emitDecoratorMetadata": false
+  , "baseUrl": "."
+  , "paths": {
+      "@src/*": ["src/*"]
+    , "@transformers/*": ["src/transformers/*"]
+    , "@test/*": ["__tests__/*"]
+    }
+  }
+}
