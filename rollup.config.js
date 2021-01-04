@@ -3,6 +3,7 @@ import commonjs from '@rollup/plugin-commonjs'
 import resolve from '@rollup/plugin-node-resolve'
 import json from '@rollup/plugin-json'
 import { terser } from 'rollup-plugin-terser'
+import analyze from 'rollup-plugin-analyzer'
 
 const UMD_NAME = 'ValueGetter'
 
@@ -14,8 +15,9 @@ function createOptions({ directory, target }) {
     , plugins: [
         typescript({ target })
       , json()
-      , resolve()
+      , resolve({ browser: true })
       , commonjs()
+      , analyze({ summaryOnly: true })
       ]
     }
   , {
@@ -24,7 +26,7 @@ function createOptions({ directory, target }) {
     , plugins: [
         typescript({ target })
       , json()
-      , resolve()
+      , resolve({ browser: true })
       , commonjs()
       , terser()
       ]
