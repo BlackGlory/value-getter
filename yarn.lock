@@ -287,10 +287,19 @@
     extra-dom "^0.2.9"
     jsdom "^16.4.0"
 
-"@blackglory/types@^0.2.17", "@blackglory/types@^0.2.18":
+"@blackglory/types@^0.2.17":
   version "0.2.18"
   resolved "https://registry.yarnpkg.com/@blackglory/types/-/types-0.2.18.tgz#2b117580083f97761bf5cbd55c0fe5517b99e2a9"
   integrity sha512-1PcbODjHhIdLpySeUQ9Oy2qOR4pHQWbudruhfNt1xxf69p3vdlnxd8sZdspXZOSKas4Ysu8CD+RwgvB/kFvt9g==
+  dependencies:
+    "@types/node" "^14.14.31"
+    ajv "^7.1.1"
+    extra-dom "^0.2.12"
+
+"@blackglory/types@^0.2.21":
+  version "0.2.21"
+  resolved "https://registry.yarnpkg.com/@blackglory/types/-/types-0.2.21.tgz#748549a28b38da9b7acc5af151659135633b8d47"
+  integrity sha512-RvLmbleLZrE628rCNV2+hiZXLfDYCci+z4nsTbjvgzpIVrO2qa7DaFdZxbR8NNYcsv5GOYME5vohQvb3/z7TsQ==
   dependencies:
     "@types/node" "^14.14.31"
     ajv "^7.1.1"

@@ -1,9 +1,4 @@
-import { Getter, isFunction } from '@blackglory/types'
-
-type WithDefaultType<T, DefaultType> =
-  T extends undefined | null
-  ? NonNullable<T> | DefaultType
-  : T
+import { Getter, isFunction, WithDefaultType } from '@blackglory/types'
 
 export class ValueGetter<T> {
   #get: Getter<T>
