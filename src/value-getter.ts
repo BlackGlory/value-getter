@@ -1,9 +1,9 @@
 import { Getter, isFunction } from '@blackglory/types'
 
-type AddDefault<Value, DefaultValue> =
-  Value extends undefined | null
-  ? NonNullable<Value> | DefaultValue
-  : Value
+type WithDefaultType<T, DefaultType> =
+  T extends undefined | null
+  ? NonNullable<T> | DefaultType
+  : T
 
 export class ValueGetter<T> {
   #get: Getter<T>
@@ -12,8 +12,8 @@ export class ValueGetter<T> {
     this.#get = get
   }
 
-  default<U>(val: U): ValueGetter<AddDefault<T, U>> {
-    return new ValueGetter(() => this.value() ?? val) as ValueGetter<AddDefault<T, U>>
+  default<U>(val: U): ValueGetter<WithDefaultType<T, U>> {
+    return new ValueGetter(() => this.value() ?? val) as ValueGetter<WithDefaultType<T, U>>
   }
 
   assert<U extends T = T>(assert: (val: T) => unknown): ValueGetter<U> {
