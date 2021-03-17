@@ -1,4 +1,5 @@
-import { Getter, isFunction, WithDefaultType } from '@blackglory/types'
+import { isFunction } from '@blackglory/types'
+import { Getter, WithDefault } from 'hotypes'
 
 export class ValueGetter<T> {
   #get: Getter<T>
@@ -7,8 +8,8 @@ export class ValueGetter<T> {
     this.#get = get
   }
 
-  default<U>(val: U): ValueGetter<WithDefaultType<T, U>> {
-    return new ValueGetter(() => this.value() ?? val) as ValueGetter<WithDefaultType<T, U>>
+  default<U>(val: U): ValueGetter<WithDefault<T, U>> {
+    return new ValueGetter(() => this.value() ?? val) as ValueGetter<WithDefault<T, U>>
   }
 
   assert<U extends T = T>(assert: (val: T) => unknown): ValueGetter<U> {

@@ -1,5 +1,5 @@
 import { ValueGetter } from '@src/value-getter'
-import { Getter } from '@blackglory/types'
+import { Getter } from 'hotypes'
 import { getError } from 'return-style'
 
 describe('ValueGetter', () => {
