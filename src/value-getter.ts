@@ -34,11 +34,13 @@ export class ValueGetter<T> {
     return new ValueGetter(() => {
       const cache = isFunction(cacheOrCacheGetter) ? cacheOrCacheGetter() : cacheOrCacheGetter
 
-      if (!cache.has(get)) {
+      if (cache.has(get)) {
+        return cache.get(get)!
+      } else {
         const val = get()
         cache.set(get, val)
+        return val
       }
-      return cache.get(get)!
     })
   }
 
