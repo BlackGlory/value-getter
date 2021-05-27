@@ -1,4 +1,4 @@
-import { isFunction } from '@blackglory/types'
+import { isFunction, isNull, isUndefined } from '@blackglory/types'
 import { Getter, WithDefault } from 'hotypes'
 
 export class ValueGetter<T> {
@@ -22,17 +22,22 @@ export class ValueGetter<T> {
 
   required(): ValueGetter<NonNullable<T>> {
     return this.assert(val => {
-      if (val === undefined || val === null) throw new Error(`${val} should not be null or undefined`)
+      if (isUndefined(val) ||  isNull(val)) {
+        throw new Error(`${val} should not be null or undefined`)
+      }
     })
   }
 
   memoize(cache: WeakMap<Getter<T>, T>): ValueGetter<T>
   memoize(cacheGetter: Getter<WeakMap<Getter<T>, T>>): ValueGetter<T>
-  memoize(cacheOrCacheGetter: WeakMap<Getter<T>, T> | Getter<WeakMap<Getter<T>, T>>): ValueGetter<T> {
+  memoize(param:
+  | WeakMap<Getter<T>, T>
+  | Getter<WeakMap<Getter<T>, T>>
+  ): ValueGetter<T> {
     const get = () => this.value()
 
     return new ValueGetter(() => {
-      const cache = isFunction(cacheOrCacheGetter) ? cacheOrCacheGetter() : cacheOrCacheGetter
+      const cache = isFunction(param) ? param() : param
 
       if (cache.has(get)) {
         return cache.get(get)!
