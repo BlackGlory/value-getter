@@ -55,7 +55,7 @@ describe('ValueGetter', () => {
       it('throws', () => {
         const url = 'example.com'
         const getter: Getter<string> = () => url
-        const vg = new ValueGetter(getter)
+        const vg = new ValueGetter(getter, 'URL')
 
         const result = vg.assert(isURL)
         const err = getError(() => result.value())
@@ -84,13 +84,14 @@ describe('ValueGetter', () => {
     describe('not pass', () => {
       it('throws', () => {
         const getter: Getter<string | undefined> = () => undefined
-        const vg = new ValueGetter(getter)
+        const vg = new ValueGetter(getter, 'param')
 
         const result = vg.required()
         const err = getError(() => result.value())
 
         expect(result).not.toBe(vg)
         expect(err).toBeInstanceOf(Error)
+        expect(err?.message).toBe('param should not be null or undefined')
       })
     })
   })

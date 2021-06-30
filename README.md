@@ -19,16 +19,15 @@ const getNodeEnv =
     .get()
 
 function env(name: string): ValueGetter<string | undefined> {
-  return new ValueGetter(() => process.env[name])
+  return new ValueGetter(() => process.env[name], name)
 }
-
 ```
 
 ## API
 
 ```ts
 class ValueGetter<T> {
-  new (get: Getter<T>) => ValueGetter<T>
+  new (get: Getter<T>, name?: string) => ValueGetter<T>
   default<U>(val: U): IValueGetter<AddDefault<T, U>>
   assert<U extends T = T>(assert: (val: T) => unknown): IValueGetter<U>
   required(): IValueGetter<NonNullable<T>>

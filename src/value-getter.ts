@@ -4,7 +4,7 @@ import { Getter, WithDefault } from 'hotypes'
 export class ValueGetter<T> {
   #get: Getter<T>
 
-  constructor(get: Getter<T>) {
+  constructor(get: Getter<T>, private name: string = 'anonymous') {
     this.#get = get
   }
 
@@ -22,8 +22,8 @@ export class ValueGetter<T> {
 
   required(): ValueGetter<NonNullable<T>> {
     return this.assert(val => {
-      if (isUndefined(val) ||  isNull(val)) {
-        throw new Error(`${val} should not be null or undefined`)
+      if (isUndefined(val) || isNull(val)) {
+        throw new Error(`${this.name} should not be null or undefined`)
       }
     })
   }
