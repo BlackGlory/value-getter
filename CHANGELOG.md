@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.2.0](https://github.com/BlackGlory/value-getter/compare/v0.1.16...v0.2.0) (2021-06-30)
+
+
+### ⚠ BREAKING CHANGES
+
+* modify the constructor of ValueGetter
+
+### Features
+
+* modify the constructor of ValueGetter ([abb87ed](https://github.com/BlackGlory/value-getter/commit/abb87ed062983ed8b41ae00e330eb128a8717f0a))
+
 ### [0.1.16](https://github.com/BlackGlory/value-getter/compare/v0.1.15...v0.1.16) (2021-06-30)
 
 
