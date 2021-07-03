@@ -1,5 +1,6 @@
 import { isFunction, isNull, isUndefined } from '@blackglory/types'
-import { Getter, WithDefault } from 'hotypes'
+import { WithDefault } from 'hotypes'
+import { Getter } from 'justypes'
 
 export class ValueGetter<T> {
   #get: Getter<T>

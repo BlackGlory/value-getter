@@ -1,5 +1,5 @@
 import { ValueGetter } from '@src/value-getter'
-import { Getter } from 'hotypes'
+import { Getter } from 'justypes'
 import { getError } from 'return-style'
 
 describe('ValueGetter', () => {
