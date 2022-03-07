@@ -615,12 +615,12 @@
   resolved "https://registry.yarnpkg.com/@blackglory/pass/-/pass-0.1.0.tgz#c78c91c89d800bf4f2e3a16bbebd4116f5267d2f"
   integrity sha512-zhCUS+Jcb87yHAgZjmFCG9qwX94UAVepy6eBKsvigC4RYJhpxhNCOmmls/gU6fR4iCtWHj0q1ucX4lY8RCdVtA==
 
-"@blackglory/types@^0.6.5":
-  version "0.6.5"
-  resolved "https://registry.yarnpkg.com/@blackglory/types/-/types-0.6.5.tgz#5f01c142ce4a98ff32f5b6fd7ea396f6e0132fea"
-  integrity sha512-5TXyKE8MPlI2dXpGvomeLuMK9DD/RO2WxVzHJMQ0RxVK0FtF9Y8ceGi1QsDFATI9yPL+l34ifoD9Crj4AYvnHw==
+"@blackglory/types@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@blackglory/types/-/types-1.0.0.tgz#721d3886e4abd03e4b896050bac0068313ea6e3a"
+  integrity sha512-hyhDW2lPBjNn7+Nkvd5c20yzHIwYJW3BbkHbB9+nk95lzKBp8DUf/Tb48M0tIHWsH/U1RqxhYIrmZwAEdd4lQA==
   dependencies:
-    justypes "^0.1.6"
+    justypes "^2.0.0"
     lodash.isplainobject "^4.0.6"
 
 "@commitlint/cli@^16.2.1":
@@ -4160,15 +4160,10 @@ jsonparse@^1.2.0:
   resolved "https://registry.yarnpkg.com/jsonparse/-/jsonparse-1.3.1.tgz#3f4dae4a91fac315f71062f8521cc239f1366280"
   integrity sha1-P02uSpH6wxX3EGL4UhzCOfE2YoA=
 
-justypes@^0.1.6:
-  version "0.1.6"
-  resolved "https://registry.yarnpkg.com/justypes/-/justypes-0.1.6.tgz#4878d68cc75a9b8c6f38e62d696457e40c093e90"
-  integrity sha512-J3C64F3cPR9cfheVhO6c+Qt6TE5ey3vThrQvcvj7uwJpBq2g99TCOk86YhrhTaqQnIaVb5ww2VhMUmJgAF5YRg==
-
-justypes@^0.1.7:
-  version "0.1.7"
-  resolved "https://registry.yarnpkg.com/justypes/-/justypes-0.1.7.tgz#89d297b8dc06203c377ddab608bab5b8b164b0f1"
-  integrity sha512-QKQRQixokHYVXtWc04U1R4h+Y5Wg32ZubhjJYEo7Tu32l5J93xHbD8vhR/G7G/k8wPo9tw6NVDEiW2QYMeh7ug==
+justypes@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/justypes/-/justypes-2.0.0.tgz#e1a09c8c99e08a54ac3a48bb97cb259d5082f907"
+  integrity sha512-WzP+uveN67uQE9RsctKxqJrfBPv3aGyKnUasxaPCdXQM1voWtMObWHzpns4PjNoDFw0EvzLVoTShKn+ihpeRTA==
 
 kind-of@^3.0.2, kind-of@^3.0.3, kind-of@^3.2.0:
   version "3.2.2"
@@ -5265,10 +5260,10 @@ rollup-plugin-terser@^7.0.2:
     serialize-javascript "^4.0.0"
     terser "^5.0.0"
 
-rollup@^2.68.0:
-  version "2.68.0"
-  resolved "https://registry.yarnpkg.com/rollup/-/rollup-2.68.0.tgz#6ccabfd649447f8f21d62bf41662e5caece3bd66"
-  integrity sha512-XrMKOYK7oQcTio4wyTz466mucnd8LzkiZLozZ4Rz0zQD+HeX4nUK4B8GrTX/2EvN2/vBF/i2WnaXboPxo0JylA==
+rollup@^2.69.2:
+  version "2.69.2"
+  resolved "https://registry.yarnpkg.com/rollup/-/rollup-2.69.2.tgz#5e0f3b6d07b2a293bc4f4727315dcddb46a96b85"
+  integrity sha512-KghktpWg3Wd+nYCsx3Griidm2/CKIJYG2yyaaKspo0TXSoGdW+0duwzKl4wWIu62oN3mFg3zCDbwVRPwuNPPlA==
   optionalDependencies:
     fsevents "~2.3.2"
 
