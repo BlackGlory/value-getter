@@ -3,32 +3,32 @@ import { WithDefault } from 'hotypes'
 import { Getter } from 'justypes'
 
 export class ValueGetter<T> {
-  #get: Getter<T>
-  #name: string
+  private getter: Getter<T>
+  private name: string
 
-  constructor(get: Getter<T>)
-  constructor(name: string, get: Getter<T>)
+  constructor(getter: Getter<T>)
+  constructor(name: string, getter: Getter<T>)
   constructor(...args:
-  | [name: string, get: Getter<T>]
-  | [get: Getter<T>]
+  | [name: string, getter: Getter<T>]
+  | [getter: Getter<T>]
   ) {
     if (args.length === 1) {
-      const [get] = args
-      this.#get = get
-      this.#name = 'anonymous'
+      const [getter] = args
+      this.getter = getter
+      this.name = 'anonymous'
     } else {
-      const [name, get] = args
-      this.#get = get
-      this.#name = name
+      const [name, getter] = args
+      this.getter = getter
+      this.name = name
     }
   }
 
   default<U>(val: U): ValueGetter<WithDefault<T, U>> {
-    return new ValueGetter(this.#name, () => this.value() ?? val) as ValueGetter<WithDefault<T, U>>
+    return new ValueGetter(this.name, () => this.value() ?? val) as ValueGetter<WithDefault<T, U>>
   }
 
   assert<U extends T = T>(assert: (val: T) => unknown): ValueGetter<U> {
-    return new ValueGetter(this.#name, () => {
+    return new ValueGetter(this.name, () => {
       const val = this.value()
       assert(val)
       return val
@@ -38,7 +38,7 @@ export class ValueGetter<T> {
   required(): ValueGetter<NonNullable<T>> {
     return this.assert(val => {
       if (isUndefined(val) || isNull(val)) {
-        throw new Error(`${this.#name} should not be null or undefined`)
+        throw new Error(`${this.name} should not be null or undefined`)
       }
     })
   }
@@ -51,7 +51,7 @@ export class ValueGetter<T> {
   ): ValueGetter<T> {
     const get = () => this.value()
 
-    return new ValueGetter(this.#name, () => {
+    return new ValueGetter(this.name, () => {
       const cache = isFunction(param) ? param() : param
 
       if (cache.has(get)) {
@@ -65,11 +65,11 @@ export class ValueGetter<T> {
   }
 
   convert<U>(convert: (val: T) => U): ValueGetter<U> {
-    return new ValueGetter(this.#name, () => convert(this.#get()))
+    return new ValueGetter(this.name, () => convert(this.getter()))
   }
 
   tap(sideEffect: (val: T) => void): ValueGetter<T> {
-    return new ValueGetter(this.#name, () => {
+    return new ValueGetter(this.name, () => {
       const val = this.value()
       sideEffect(val)
       return val
@@ -77,10 +77,10 @@ export class ValueGetter<T> {
   }
 
   get(): Getter<T> {
-    return this.#get
+    return this.getter
   }
 
   value(): T {
-    return this.#get()
+    return this.getter()
   }
 }
