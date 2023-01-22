@@ -1,6 +1,7 @@
-import { ValueGetter } from '@src/value-getter'
+import { ValueGetter } from '@src/value-getter.js'
 import { Getter } from 'justypes'
 import { getError } from 'return-style'
+import { jest } from '@jest/globals'
 
 describe('ValueGetter', () => {
   describe('default<U>(val: U))', () => {

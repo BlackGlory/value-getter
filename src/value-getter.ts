@@ -1,4 +1,4 @@
-import { isFunction, isNull, isUndefined } from '@blackglory/types'
+import { isFunction, isNull, isUndefined } from 'extra-utils'
 import { WithDefault } from 'hotypes'
 import { Getter } from 'justypes'
 

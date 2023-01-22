@@ -1,1 +1,1 @@
-export * from './value-getter'
+export * from './value-getter.js'
