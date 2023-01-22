@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.3.0](https://github.com/BlackGlory/value-getter/compare/v0.2.4...v0.3.0) (2023-01-22)
+
+
+### ⚠ BREAKING CHANGES
+
+* CommonJS => ESM
+
+* commonjs => esm ([a52fc2c](https://github.com/BlackGlory/value-getter/commit/a52fc2c4abdd56bb1d1371206c0989c19dfea415))
+
 ### [0.2.4](https://github.com/BlackGlory/value-getter/compare/v0.2.3...v0.2.4) (2022-05-15)
 
 ### [0.2.3](https://github.com/BlackGlory/value-getter/compare/v0.2.2...v0.2.3) (2022-03-20)
