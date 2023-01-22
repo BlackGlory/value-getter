@@ -9,9 +9,6 @@
   "type": "module",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
-  "engines": {
-    "node": ">=16"
-  },
   "sideEffects": false,
   "repository": "git@github.com:BlackGlory/value-getter.git",
   "author": "BlackGlory <woshenmedoubuzhidao@blackglory.me>",

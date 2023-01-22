@@ -7,8 +7,7 @@ All notable changes to this project will be documented in this file. See [standa
 
 ### ⚠ BREAKING CHANGES
 
-* CommonJS => ESM.
-* The minimal version of Node.js is 16.
+* CommonJS => ESM
 
 * commonjs => esm ([a52fc2c](https://github.com/BlackGlory/value-getter/commit/a52fc2c4abdd56bb1d1371206c0989c19dfea415))
 
