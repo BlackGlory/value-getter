@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.3.2](https://github.com/BlackGlory/value-getter/compare/v0.3.1...v0.3.2) (2023-06-11)
+
+
+### Bug Fixes
+
+* export src ([920910b](https://github.com/BlackGlory/value-getter/commit/920910b910b7b98c25ad55573bd4669612703744))
+
 ### [0.3.1](https://github.com/BlackGlory/value-getter/compare/v0.3.0...v0.3.1) (2023-04-07)
 
 ## [0.3.0](https://github.com/BlackGlory/value-getter/compare/v0.2.4...v0.3.0) (2023-01-22)
