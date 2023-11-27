@@ -98,10 +98,13 @@ describe('ValueGetter', () => {
   })
 
   describe('memoize', () => {
-    describe('memoize(cache: WeakMap<Getter<T>, T>)', () => {
+    describe.each([
+      ['Map', Map]
+    , ['WeakMap', WeakMap]
+    ])('memoize(cache: %s)', (_, Map) => {
       it('return ValueGetter<T>', () => {
         const fn = jest.fn().mockReturnValueOnce('value1').mockReturnValueOnce('value2')
-        const cache = new WeakMap()
+        const cache = new Map()
         const vg = new ValueGetter(fn)
 
         const result = vg.memoize(cache)
@@ -115,10 +118,13 @@ describe('ValueGetter', () => {
       })
     })
 
-    describe('memoize(cacheGetter: Getter<WeakMap<Getter<T>, T>>)', () => {
+    describe.each([
+      ['Map', Map]
+    , ['WeakMap', WeakMap]
+    ])('memoize(cacheGetter: %s)', (_, Map) => {
       it('return ValueGetter<T>', () => {
         const fn = jest.fn().mockReturnValueOnce('value1').mockReturnValueOnce('value2')
-        const cache = new WeakMap()
+        const cache = new Map()
         const cacheGetter = () => cache
         const vg = new ValueGetter(fn)
 
@@ -135,13 +141,13 @@ describe('ValueGetter', () => {
       describe('reset cache', () => {
         it('return ValueGetter<T>', () => {
           const fn = jest.fn().mockReturnValueOnce('value1').mockReturnValueOnce('value2')
-          let cache = new WeakMap()
+          let cache = new Map()
           const cacheGetter = () => cache
           const vg = new ValueGetter(fn)
 
           const result = vg.memoize(cacheGetter)
           const value1 = result.value()
-          cache = new WeakMap()
+          cache = new Map()
           const value2 = result.value()
 
           expect(result).not.toBe(vg)

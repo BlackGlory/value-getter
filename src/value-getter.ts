@@ -43,10 +43,18 @@ export class ValueGetter<T> {
     })
   }
 
-  memoize(cache: WeakMap<Getter<T>, T>): ValueGetter<T>
-  memoize(cacheGetter: Getter<WeakMap<Getter<T>, T>>): ValueGetter<T>
-  memoize(param:
+  memoize(cache:
+  | Map<Getter<T>, T>
   | WeakMap<Getter<T>, T>
+  ): ValueGetter<T>
+  memoize(cacheGetter: Getter<
+  | Map<Getter<T>, T>
+  | WeakMap<Getter<T>, T>
+  >): ValueGetter<T>
+  memoize(param:
+  | Map<Getter<T>, T>
+  | WeakMap<Getter<T>, T>
+  | Getter<Map<Getter<T>, T>>
   | Getter<WeakMap<Getter<T>, T>>
   ): ValueGetter<T> {
     const get = () => this.value()
