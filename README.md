@@ -23,7 +23,7 @@ function env(name: string): ValueGetter<string | undefined> {
 ## API
 ```ts
 class ValueGetter<T> {
-  new (name: string, get: Getter<T>) => ValueGetter<T>
+  new (name: string | undefined, get: Getter<T>) => ValueGetter<T>
   new (get: Getter<T>) => ValueGetter<T>
 
   default<U>(val: U): IValueGetter<AddDefault<T, U>>

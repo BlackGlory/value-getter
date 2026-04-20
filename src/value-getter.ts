@@ -4,18 +4,17 @@ import { Getter } from 'justypes'
 
 export class ValueGetter<T> {
   private getter: Getter<T>
-  private name: string
+  private name?: string
 
   constructor(getter: Getter<T>)
-  constructor(name: string, getter: Getter<T>)
+  constructor(name: string | undefined, getter: Getter<T>)
   constructor(...args:
-  | [name: string, getter: Getter<T>]
+  | [name: string | undefined, getter: Getter<T>]
   | [getter: Getter<T>]
   ) {
     if (args.length === 1) {
       const [getter] = args
       this.getter = getter
-      this.name = 'anonymous'
     } else {
       const [name, getter] = args
       this.getter = getter
@@ -24,7 +23,10 @@ export class ValueGetter<T> {
   }
 
   default<U>(val: U): ValueGetter<WithDefault<T, U>> {
-    return new ValueGetter(this.name, () => this.value() ?? val) as ValueGetter<WithDefault<T, U>>
+    return new ValueGetter(
+      this.name
+    , () => this.value() ?? val
+    ) as ValueGetter<WithDefault<T, U>>
   }
 
   assert<U extends T = T>(assert: (val: T) => unknown): ValueGetter<U> {
@@ -38,7 +40,7 @@ export class ValueGetter<T> {
   required(): ValueGetter<NonNullable<T>> {
     return this.assert(val => {
       if (isUndefined(val) || isNull(val)) {
-        throw new Error(`${this.name} should not be null or undefined`)
+        throw new Error(`The ${this.name ?? 'value'} should not be null or undefined`)
       }
     })
   }

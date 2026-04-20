@@ -92,7 +92,7 @@ describe('ValueGetter', () => {
 
         expect(result).not.toBe(vg)
         expect(err).toBeInstanceOf(Error)
-        expect(err?.message).toBe('param should not be null or undefined')
+        expect(err?.message).toBe('The param should not be null or undefined')
       })
     })
   })
