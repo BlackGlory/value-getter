@@ -3,8 +3,8 @@ import { WithDefault } from 'hotypes'
 import { Getter } from 'justypes'
 
 export class ValueGetter<T> {
-  private getter: Getter<T>
-  private name?: string
+  private readonly getter: Getter<T>
+  private readonly name?: string
 
   constructor(getter: Getter<T>)
   constructor(name: string | undefined, getter: Getter<T>)
@@ -59,16 +59,18 @@ export class ValueGetter<T> {
   | Getter<Map<Getter<T>, T>>
   | Getter<WeakMap<Getter<T>, T>>
   ): ValueGetter<T> {
-    const get = () => this.value()
+    const getter = this.getter
 
     return new ValueGetter(this.name, () => {
-      const cache = isFunction(param) ? param() : param
+      const cache = isFunction(param)
+                  ? param()
+                  : param
 
-      if (cache.has(get)) {
-        return cache.get(get)!
+      if (cache.has(getter)) {
+        return cache.get(getter)!
       } else {
-        const val = get()
-        cache.set(get, val)
+        const val = getter()
+        cache.set(getter, val)
         return val
       }
     })
