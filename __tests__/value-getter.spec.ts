@@ -1,7 +1,8 @@
 import { ValueGetter } from '@src/value-getter.js'
 import { Getter } from 'justypes'
-import { getError } from 'return-style'
+import { getError, isSuccess } from 'return-style'
 import { jest } from '@jest/globals'
+import { AssertionError } from '@blackglory/errors'
 
 describe('ValueGetter', () => {
   describe('default<U>(val: U))', () => {
@@ -9,12 +10,12 @@ describe('ValueGetter', () => {
       it('return ValueGetter<NonNullable<T> | U>', () => {
         const defaultValue = 64
         const getter: Getter<string | undefined> = () => undefined
-        const vg = new ValueGetter(getter)
+        const valueGetter = new ValueGetter(getter)
 
-        const result = vg.default(defaultValue)
+        const result = valueGetter.default(defaultValue)
         const value = result.value()
 
-        expect(result).not.toBe(vg)
+        expect(result).not.toBe(valueGetter)
         expect(result).toBeInstanceOf(ValueGetter)
         expect(value).toBe(defaultValue)
       })
@@ -24,44 +25,76 @@ describe('ValueGetter', () => {
       it('return ValueGetter<T>', () => {
         const defaultValue = 64
         const getter: Getter<string> = () => '64'
-        const vg = new ValueGetter(getter)
+        const valueGetter = new ValueGetter(getter)
 
-        const result = vg.default(defaultValue)
+        const result = valueGetter.default(defaultValue)
         const value = result.value()
 
-        expect(result).not.toBe(vg)
+        expect(result).not.toBe(valueGetter)
         expect(result).toBeInstanceOf(ValueGetter)
         expect(value).toBe('64')
       })
     })
   })
 
-  describe('assert(predicate: (val: T) => unknown)', () => {
-    describe('pass', () => {
-      it('return ValueGetter<T>', () => {
+  describe('assert', () => {
+    describe('(predicate: (val: T) => boolean, message: string)', () => {
+      test('pass', () => {
         const url = 'https://example.com'
         const getter: Getter<string> = () => url
-        const vg = new ValueGetter(getter)
+        const valueGetter = new ValueGetter(getter)
 
-        const result = vg.assert(isURL)
+        const result = valueGetter.assert(
+          val => isSuccess(() => new URL(val))
+        , 'The param is not a valid URL'
+        )
         const value = result.value()
 
-        expect(result).not.toBe(vg)
+        expect(result).not.toBe(getter)
         expect(result).toBeInstanceOf(ValueGetter)
         expect(value).toBe(url)
       })
-    })
 
-    describe('not pass', () => {
-      it('throws', () => {
+      test('not pass', () => {
         const url = 'example.com'
         const getter: Getter<string> = () => url
-        const vg = new ValueGetter(getter)
+        const valueGetter = new ValueGetter(getter)
 
-        const result = vg.assert(isURL)
+        const result = valueGetter.assert(
+          val => isSuccess(() => new URL(val))
+        , 'The param is not a valid URL'
+        )
         const err = getError(() => result.value())
 
-        expect(result).not.toBe(vg)
+        expect(result).not.toBe(getter)
+        expect(result).toBeInstanceOf(ValueGetter)
+        expect(err).toBeInstanceOf(AssertionError)
+      })
+    })
+
+    describe('(assertion: (val: T) => void)', () => {
+      test('pass', () => {
+        const url = 'https://example.com'
+        const getter: Getter<string> = () => url
+        const valueGetter = new ValueGetter(getter)
+
+        const result = valueGetter.assert(val => new URL(val))
+        const value = result.value()
+
+        expect(result).not.toBe(getter)
+        expect(result).toBeInstanceOf(ValueGetter)
+        expect(value).toBe(url)
+      })
+
+      test('not pass', () => {
+        const url = 'example.com'
+        const getter: Getter<string> = () => url
+        const valueGetter = new ValueGetter(getter)
+
+        const result = valueGetter.assert(val => new URL(val))
+        const err = getError(() => result.value())
+
+        expect(result).not.toBe(valueGetter)
         expect(result).toBeInstanceOf(ValueGetter)
         expect(err).not.toBeUndefined()
       })
@@ -72,12 +105,12 @@ describe('ValueGetter', () => {
     describe('pass', () => {
       it('return ValueGetter<NonNullable<T>>', () => {
         const getter: Getter<string | undefined> = () => 'value'
-        const vg = new ValueGetter(getter)
+        const valueGetter = new ValueGetter(getter)
 
-        const result = vg.required()
+        const result = valueGetter.required()
         const value = result.value()
 
-        expect(result).not.toBe(vg)
+        expect(result).not.toBe(valueGetter)
         expect(value).toBe('value')
       })
     })
@@ -85,12 +118,12 @@ describe('ValueGetter', () => {
     describe('not pass', () => {
       it('throws', () => {
         const getter: Getter<string | undefined> = () => undefined
-        const vg = new ValueGetter('param', getter)
+        const valueGetter = new ValueGetter('param', getter)
 
-        const result = vg.required()
+        const result = valueGetter.required()
         const err = getError(() => result.value())
 
-        expect(result).not.toBe(vg)
+        expect(result).not.toBe(valueGetter)
         expect(err).toBeInstanceOf(Error)
         expect(err?.message).toBe('The param should not be null or undefined')
       })
@@ -105,13 +138,13 @@ describe('ValueGetter', () => {
       it('return ValueGetter<T>', () => {
         const fn = jest.fn().mockReturnValueOnce('value1').mockReturnValueOnce('value2')
         const cache = new Map()
-        const vg = new ValueGetter(fn)
+        const valueGetter = new ValueGetter(fn)
 
-        const result = vg.memoize(cache)
+        const result = valueGetter.memoize(cache)
         const value1 = result.value()
         const value2 = result.value()
 
-        expect(result).not.toBe(vg)
+        expect(result).not.toBe(valueGetter)
         expect(value1).toBe('value1')
         expect(value2).toBe('value1')
         expect(fn).toBeCalledTimes(1)
@@ -126,13 +159,13 @@ describe('ValueGetter', () => {
         const fn = jest.fn().mockReturnValueOnce('value1').mockReturnValueOnce('value2')
         const cache = new Map()
         const cacheGetter = () => cache
-        const vg = new ValueGetter(fn)
+        const valueGetter = new ValueGetter(fn)
 
-        const result = vg.memoize(cacheGetter)
+        const result = valueGetter.memoize(cacheGetter)
         const value1 = result.value()
         const value2 = result.value()
 
-        expect(result).not.toBe(vg)
+        expect(result).not.toBe(valueGetter)
         expect(value1).toBe('value1')
         expect(value2).toBe('value1')
         expect(fn).toBeCalledTimes(1)
@@ -143,14 +176,14 @@ describe('ValueGetter', () => {
           const fn = jest.fn().mockReturnValueOnce('value1').mockReturnValueOnce('value2')
           let cache = new Map()
           const cacheGetter = () => cache
-          const vg = new ValueGetter(fn)
+          const valueGetter = new ValueGetter(fn)
 
-          const result = vg.memoize(cacheGetter)
+          const result = valueGetter.memoize(cacheGetter)
           const value1 = result.value()
           cache = new Map()
           const value2 = result.value()
 
-          expect(result).not.toBe(vg)
+          expect(result).not.toBe(valueGetter)
           expect(value1).toBe('value1')
           expect(value2).toBe('value2')
           expect(fn).toBeCalledTimes(2)
@@ -162,12 +195,12 @@ describe('ValueGetter', () => {
   describe('convert<U>(convert: (val: T) => U)', () => {
     it('return ValueGetter<U>', () => {
       const getter: Getter<string> = () => '64'
-      const vg = new ValueGetter(getter)
+      const valueGetter = new ValueGetter(getter)
 
-      const result = vg.convert(Number)
+      const result = valueGetter.convert(Number)
       const value = result.value()
 
-      expect(result).not.toBe(vg)
+      expect(result).not.toBe(valueGetter)
       expect(result).toBeInstanceOf(ValueGetter)
       expect(value).toBe(64)
     })
@@ -177,12 +210,12 @@ describe('ValueGetter', () => {
     it('return ValueGetter<T>', () => {
       const fn = jest.fn()
       const getter: Getter<string> = () => 'value'
-      const vg = new ValueGetter(getter)
+      const valueGetter = new ValueGetter(getter)
 
-      const result = vg.tap(fn)
+      const result = valueGetter.tap(fn)
       const value = result.value()
 
-      expect(result).not.toBe(vg)
+      expect(result).not.toBe(valueGetter)
       expect(value).toBe('value')
       expect(fn).toBeCalledWith(value)
       expect(fn).toBeCalledTimes(1)
@@ -192,9 +225,9 @@ describe('ValueGetter', () => {
   describe('get()', () => {
     it('return Getter<T>', () => {
       const getter: Getter<string> = () => 'value'
-      const vg = new ValueGetter(getter)
+      const valueGetter = new ValueGetter(getter)
 
-      const result = vg.get()
+      const result = valueGetter.get()
       const value = result()
 
       expect(value).toBe('value')
@@ -204,15 +237,11 @@ describe('ValueGetter', () => {
   describe('value()', () => {
     it('return T', () => {
       const getter: Getter<string> = () => 'value'
-      const vg = new ValueGetter(getter)
+      const valueGetter = new ValueGetter(getter)
 
-      const result = vg.value()
+      const result = valueGetter.value()
 
       expect(result).toBe('value')
     })
   })
 })
-
-function isURL(url: string): void {
-  new URL(url)
-}

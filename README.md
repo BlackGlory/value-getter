@@ -27,8 +27,17 @@ class ValueGetter<T> {
   new (get: Getter<T>) => ValueGetter<T>
 
   default<U>(val: U): IValueGetter<AddDefault<T, U>>
-  assert<U extends T = T>(assert: (val: T) => void): IValueGetter<U>
+
+  assert<U extends T = T>(
+    predicate: (val: T) => boolean
+  , message: string
+  ): ValueGetter<U>
+  assert<U extends T = T>(
+    assertion: (val: T) => void
+  ): ValueGetter<U>
+
   required(): IValueGetter<NonNullable<T>>
+
   memoize(cache:
   | Map<Getter<T>, T>
   | WeakMap<Getter<T>, T>
@@ -37,9 +46,13 @@ class ValueGetter<T> {
   | Map<Getter<T>, T>
   | WeakMap<Getter<T>, T>
   >): ValueGetter<T>
+
   convert<U>(convert: (val: T) => U): IValueGetter<U>
+
   tap(sideEffect: (val: T) => void): IValueGetter<T>
+
   get(): Getter<T>
+
   value(): T
 }
 ```

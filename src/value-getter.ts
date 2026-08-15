@@ -1,6 +1,7 @@
 import { isFunction, isNull, isUndefined } from 'extra-utils'
 import { WithDefault } from 'hotypes'
 import { Getter } from 'justypes'
+import { assert } from '@blackglory/errors'
 
 export class ValueGetter<T> {
   private readonly getter: Getter<T>
@@ -29,12 +30,33 @@ export class ValueGetter<T> {
     ) as ValueGetter<WithDefault<T, U>>
   }
 
-  assert<U extends T = T>(assert: (val: T) => void): ValueGetter<U> {
+  assert<U extends T = T>(
+    predicate: (val: T) => boolean
+  , message: string
+  ): ValueGetter<U>
+  assert<U extends T = T>(
+    assertion: (val: T) => void
+  ): ValueGetter<U>
+  assert<U extends T = T>(...args:
+  | [predicate: (val: T) => boolean, message: string]
+  | [assert: (val: T) => void]
+  ): ValueGetter<U> {
     return new ValueGetter(this.name, () => {
-      const val = this.value()
-      assert(val)
+      if (args.length === 2) {
+        const [predicate, message] = args
 
-      return val
+        const val = this.value()
+        assert(predicate(val), message)
+
+        return val
+      } else {
+        const [assert] = args
+
+        const val = this.value()
+        assert(val)
+
+        return val
+      }
     }) as ValueGetter<U>
   }
 
