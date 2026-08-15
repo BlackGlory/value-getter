@@ -1,4 +1,4 @@
-import { isFunction, isNull, isUndefined } from 'extra-utils'
+import { isFunction, isntNullish } from 'extra-utils'
 import { WithDefault } from 'hotypes'
 import { Getter } from 'justypes'
 import { assert } from '@blackglory/errors'
@@ -15,19 +15,21 @@ export class ValueGetter<T> {
   ) {
     if (args.length === 1) {
       const [getter] = args
+
       this.getter = getter
     } else {
       const [name, getter] = args
+
       this.getter = getter
       this.name = name
     }
   }
 
   default<U>(val: U): ValueGetter<WithDefault<T, U>> {
-    return new ValueGetter(
-      this.name
-    , () => this.value() ?? val
-    ) as ValueGetter<WithDefault<T, U>>
+    return new ValueGetter(this.name, () => {
+      return this.value()
+          ?? val
+    }) as ValueGetter<WithDefault<T, U>>
   }
 
   assert<U extends T = T>(
@@ -42,18 +44,18 @@ export class ValueGetter<T> {
   | [assert: (val: T) => void]
   ): ValueGetter<U> {
     return new ValueGetter(this.name, () => {
-      if (args.length === 2) {
-        const [predicate, message] = args
-
-        const val = this.value()
-        assert(predicate(val), message)
-
-        return val
-      } else {
+      if (args.length === 1) {
         const [assert] = args
 
         const val = this.value()
         assert(val)
+
+        return val
+      } else {
+        const [predicate, message] = args
+
+        const val = this.value()
+        assert(predicate(val), message)
 
         return val
       }
@@ -61,11 +63,10 @@ export class ValueGetter<T> {
   }
 
   required(): ValueGetter<NonNullable<T>> {
-    return this.assert(val => {
-      if (isUndefined(val) || isNull(val)) {
-        throw new Error(`The ${this.name ?? 'value'} should not be null or undefined`)
-      }
-    })
+    return this.assert(
+      isntNullish
+    , `The ${this.name ?? 'value'} should not be null or undefined`
+    )
   }
 
   memoize(cache:
@@ -93,7 +94,9 @@ export class ValueGetter<T> {
         return cache.get(getter)!
       } else {
         const val = getter()
+
         cache.set(getter, val)
+
         return val
       }
     })
