@@ -27,7 +27,7 @@ class ValueGetter<T> {
   new (get: Getter<T>) => ValueGetter<T>
 
   default<U>(val: U): IValueGetter<AddDefault<T, U>>
-  assert<U extends T = T>(assert: (val: T) => unknown): IValueGetter<U>
+  assert<U extends T = T>(assert: (val: T) => void): IValueGetter<U>
   required(): IValueGetter<NonNullable<T>>
   memoize(cache:
   | Map<Getter<T>, T>

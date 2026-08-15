@@ -29,10 +29,11 @@ export class ValueGetter<T> {
     ) as ValueGetter<WithDefault<T, U>>
   }
 
-  assert<U extends T = T>(assert: (val: T) => unknown): ValueGetter<U> {
+  assert<U extends T = T>(assert: (val: T) => void): ValueGetter<U> {
     return new ValueGetter(this.name, () => {
       const val = this.value()
       assert(val)
+
       return val
     }) as ValueGetter<U>
   }
